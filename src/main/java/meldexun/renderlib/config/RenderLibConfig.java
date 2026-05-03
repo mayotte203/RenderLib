@@ -59,6 +59,28 @@ public class RenderLibConfig {
 		return x != 0.0D || y != 0.0D || z != 0.0D ? new Vec3d(x, y, z) : null;
 	});
 
+	@Config.Comment("Global multiplier for getMaxRenderDistanceSquared().")
+	public static Double tileEntityGlobalMaxRenderDistanceSquaredMultiplier = 1.0D;
+
+	@Config.Comment("Allows you to multiply the getMaxRenderDistanceSquared() (Accepts 'modid=multiplier' or 'modid:tileentity=multiplier').")
+	public static String[] tileEntityMaxRenderDistanceSquaredMultiplierList = new String[0];
+	@Config.Ignore
+	public static ResourceLocationMap<TileEntity, Double> tileEntityMaxRenderDistanceSquaredMultiplierListImpl = new ResourceLocationMap<>(TileEntity.REGISTRY::getNameForObject, null, s -> {
+		double multiplier = s.length >= 1 ? Double.parseDouble(s[0]) : 0.0D;
+		return multiplier >= 0.0D ? multiplier : 1.0D;
+	});
+
+	@Config.Comment("Global increment for getMaxRenderDistanceSquared().")
+	public static Double tileEntityGlobalMaxRenderDistanceSquaredIncrement = 0.0D;
+
+	@Config.Comment("Allows you to increment the getMaxRenderDistanceSquared() (Accepts 'modid=increment' or 'modid:tileentity=increment').")
+	public static String[] tileEntityMaxRenderDistanceSquaredIncrementList = new String[0];
+	@Config.Ignore
+	public static ResourceLocationMap<TileEntity, Double> tileEntityMaxRenderDistanceSquaredIncrementListImpl = new ResourceLocationMap<>(TileEntity.REGISTRY::getNameForObject, null, s -> {
+		double increment = s.length >= 1 ? Double.parseDouble(s[0]) : 0.0D;
+		return increment != 0.0D ? increment : 0.0D;
+	});
+
 	public static class OpenGLDebugConfiguration {
 
 		@Config.Comment("Enable/Disable crashing when an OpenGL error occurs. If disabled OpenGL errors are likely to go unnoticed unless the log is checked manually.")
@@ -87,6 +109,8 @@ public class RenderLibConfig {
 		tileEntityCachedBoundingBoxBlacklistImpl.load(tileEntityCachedBoundingBoxBlacklist);
 		entityBoundingBoxGrowthListImpl.load(entityBoundingBoxGrowthList);
 		tileEntityBoundingBoxGrowthListImpl.load(tileEntityBoundingBoxGrowthList);
+		tileEntityMaxRenderDistanceSquaredMultiplierListImpl.load(tileEntityMaxRenderDistanceSquaredMultiplierList);
+		tileEntityMaxRenderDistanceSquaredIncrementListImpl.load(tileEntityMaxRenderDistanceSquaredIncrementList);
 	}
 
 }

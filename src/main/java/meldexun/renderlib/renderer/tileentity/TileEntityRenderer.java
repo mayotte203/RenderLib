@@ -6,9 +6,11 @@ import java.util.Deque;
 import meldexun.renderlib.RenderLib;
 import meldexun.renderlib.api.IBoundingBoxCache;
 import meldexun.renderlib.api.ILoadable;
+import meldexun.renderlib.api.IMaxRenderDistanceAdjusting;
 import meldexun.renderlib.integration.ValkyrienSkies;
 import meldexun.renderlib.util.RenderUtil;
 import meldexun.renderlib.util.TileEntityUtil;
+import meldexun.renderlib.config.RenderLibConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -84,7 +86,13 @@ public class TileEntityRenderer {
 			this.setCanBeOcclusionCulled(tileEntity, false);
 			return false;
 		}
-		if (tileEntity.getDistanceSq(camX, camY, camZ) >= tileEntity.getMaxRenderDistanceSquared()) {
+
+		Double maxRenderDistanceMultiplier = RenderLibConfig.tileEntityGlobalMaxRenderDistanceSquaredMultiplier 
+																					* ((IMaxRenderDistanceAdjusting) tileEntity).getMultiplier();
+		Double maxRenderDistanceIncrement = RenderLibConfig.tileEntityGlobalMaxRenderDistanceSquaredIncrement
+																				 + ((IMaxRenderDistanceAdjusting) tileEntity).getIncrement();
+
+		if (tileEntity.getDistanceSq(camX, camY, camZ) >= tileEntity.getMaxRenderDistanceSquared() * maxRenderDistanceMultiplier + maxRenderDistanceIncrement) {
 			this.setCanBeOcclusionCulled(tileEntity, false);
 			return false;
 		}

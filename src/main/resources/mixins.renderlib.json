@@ -22,6 +22,7 @@
     "entity.MixinRender",
     "tileentity.MixinRenderGlobal",
     "tileentity.MixinTileEntityRendererDispatcher",
+    "renderdistance.MixinTileEntity",
     "MixinChunk",
     "MixinClippingHelper",
     "MixinGuiOverlayDebug",
